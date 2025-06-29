@@ -1,6 +1,7 @@
 import k from "./kaplayCrtx";
 import { makeSonic } from "./entities";
 
+// Load assets
 k.loadSprite("chemical-bg", "graphics/chemical-bg.png");
 k.loadSprite("platforms", "graphics/platforms.png");
 k.loadSprite("sonic", "graphics/sonic.png", {
@@ -9,6 +10,13 @@ k.loadSprite("sonic", "graphics/sonic.png", {
     anims: {
         run: { from: 0, to: 7, loop: true, speed: 30 },
         jump: { from: 8, to: 15, loop: true, speed: 100 },
+    },
+});
+k.loadSprite("ring", "graphics/ring.png", {
+    sliceX: 16,
+    sliceY: 1,
+    anims: {
+        spin: { from: 0, to: 15, loop: true, speed: 30 },
     },
 });
 k.loadSound("jump", "sounds/Jump.wav");
