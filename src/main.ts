@@ -1,7 +1,8 @@
 import k from "./kaplayCrtx";
 import { makeSonic, makeRing } from "./entities";
+import { GameObj } from "kaplay";
 
-// Load assets
+// Load Sprites
 k.loadSprite("chemical-bg", "graphics/chemical-bg.png");
 k.loadSprite("platforms", "graphics/platforms.png");
 k.loadSprite("sonic", "graphics/sonic.png", {
@@ -19,10 +20,36 @@ k.loadSprite("ring", "graphics/ring.png", {
         spin: { from: 0, to: 15, loop: true, speed: 30 },
     },
 });
-k.loadSound("jump", "sounds/Jump.wav");
+k.loadSprite("motobug", "graphics/motobug.png", {
+    sliceX: 5,
+    sliceY: 1,
+    anims: {
+        run: { from: 0, to: 4, loop: true, speed: 8 },
+    },
+});
 
+// Load sounds
+k.loadSound("destroy", "sounds/Destroy.wav");
+k.loadSound("hurt", "sounds/Hurt.wav");
+k.loadSound("hyper-ring", "sounds/HyperRing.wav");
+k.loadSound("jump", "sounds/Jump.wav");
+k.loadSound("ring", "sounds/Ring.wav");
+
+// Load font
+k.loadFont("mania", "fonts/mania.ttf");
+
+// Main Game Scene
 k.scene("game", () => {
     k.setGravity(3100);
+
+    let gameSpeed = 100;
+    k.loop(1, () => {
+        gameSpeed += 50;
+    });
+
+    let score = 0;
+    let scoreMultiplier = 0;
+    const scoreText = k.add([k.text("SCORE : 0", { font: "mania", size: 48 }), k.pos(20, 20), k.z(2)]);
 
     // Background objects
     const bgPiecesWidth = 2880;
@@ -57,6 +84,13 @@ k.scene("game", () => {
 
     spawnRing();
 
+    sonic.onCollide("ring", (ring: GameObj) => {
+        k.play("ring", { volume: 0.5 });
+        k.destroy(ring);
+        score++;
+        scoreText.text = `SCORE : ${score}`;
+    });
+
     k.onUpdate(() => {
         if (bgPieces[1].pos.x < 0) {
             bgPieces[0].moveTo(bgPieces[1].pos.x + bgPiecesWidth * 2, 0);
@@ -79,11 +113,6 @@ k.scene("game", () => {
 
         platforms[0].move(-gameSpeed, 0);
         platforms[1].moveTo(platforms[0].pos.x + platformWidth, platforms[0].pos.y);
-    });
-
-    let gameSpeed = 100;
-    k.loop(1, () => {
-        gameSpeed += 50;
     });
 });
 
