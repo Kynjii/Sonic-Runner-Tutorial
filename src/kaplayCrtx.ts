@@ -14,6 +14,7 @@ const k = kaplay({
     touchToMouse: true,
     debug: true,
     pixelDensity: window.devicePixelRatio,
+    background: [0, 0, 0],
 });
 
 export default k;
