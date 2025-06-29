@@ -1,5 +1,5 @@
 import k from "./kaplayCrtx";
-import { makeSonic } from "./entities";
+import { makeSonic, makeRing } from "./entities";
 
 // Load assets
 k.loadSprite("chemical-bg", "graphics/chemical-bg.png");
@@ -39,6 +39,23 @@ k.scene("game", () => {
 
     // static body for the platforms
     k.add([k.rect(1280, 200), k.opacity(0), k.pos(0, 641), k.area(), k.body({ isStatic: true })]);
+
+    const spawnRing = () => {
+        const ring = makeRing(k.vec2(1280, 610));
+        ring.onUpdate(() => {
+            ring.move(-gameSpeed, 0);
+        });
+
+        ring.onEnterScreen(() => {
+            k.destroy(ring);
+        });
+
+        const waitTime = k.rand(0.5, 3);
+
+        k.wait(waitTime, spawnRing);
+    };
+
+    spawnRing();
 
     k.onUpdate(() => {
         if (bgPieces[1].pos.x < 0) {
