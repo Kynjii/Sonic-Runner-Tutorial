@@ -31,3 +31,7 @@ export function makeSonic(position: Vec2) {
 export function makeRing(position: Vec2) {
     return k.add([k.sprite("ring", { anim: "spin" }), k.scale(3), k.area(), k.anchor("center"), k.pos(position), k.offscreen(), "ring"]);
 }
+
+export function makeMotobug(position: Vec2) {
+    return k.add([k.sprite("motobug", { anim: "run" }), k.area({ shape: new k.Rect(k.vec2(-5, 0), 32, 32) }), k.scale(3), k.anchor("center"), k.pos(position), k.offscreen(), "enemy"]);
+}
