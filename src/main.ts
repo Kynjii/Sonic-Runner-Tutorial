@@ -1,4 +1,5 @@
 import k from "./kaplayCrtx";
+import { makeSonic } from "./entities";
 
 k.loadSprite("chemical-bg", "graphics/chemical-bg.png");
 k.loadSprite("platforms", "graphics/platforms.png");
@@ -10,13 +11,26 @@ k.loadSprite("sonic", "graphics/sonic.png", {
         jump: { from: 8, to: 15, loop: true, speed: 100 },
     },
 });
+k.loadSound("jump", "sounds/Jump.wav");
 
 k.scene("game", () => {
+    k.setGravity(3100);
+
+    // Background objects
     const bgPiecesWidth = 2880;
     const bgPieces = [k.add([k.sprite("chemical-bg"), k.pos(0, 0), k.opacity(0.8), k.scale(1.5)]), k.add([k.sprite("chemical-bg"), k.pos(bgPiecesWidth, 0), k.opacity(0.8), k.scale(1.5)])];
 
+    // Platform objects
     const platformWidth = 2560;
     const platforms = [k.add([k.sprite("platforms"), k.pos(0, 450), k.scale(2)]), k.add([k.sprite("platforms"), k.pos(platformWidth, 450), k.scale(2)])];
+
+    // Sonic entity
+    const sonic = makeSonic(k.vec2(100, 100));
+    sonic.setControls();
+    sonic.setEvents();
+
+    // static body for the platforms
+    k.add([k.rect(1280, 200), k.opacity(0), k.pos(0, 641), k.area(), k.body({ isStatic: true })]);
 
     k.onUpdate(() => {
         if (bgPieces[1].pos.x < 0) {
